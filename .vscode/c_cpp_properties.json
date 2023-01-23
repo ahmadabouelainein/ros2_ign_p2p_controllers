@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/awaleed152/AuNa/install/car_simulator/include/**",
+        "/home/awaleed152/AuNa/install/ros_its_msgs/include/**",
+        "/home/awaleed152/AuNa/install/etsi_its_msgs/include/**",
+        "/home/awaleed152/2022-pg-cooperative-driving/install/carla_waypoint_types/include/**",
+        "/home/awaleed152/2022-pg-cooperative-driving/install/carla_ros_scenario_runner_types/include/**",
+        "/home/awaleed152/2022-pg-cooperative-driving/install/carla_ackermann_msgs/include/**",
+        "/home/awaleed152/2022-pg-cooperative-driving/install/carla_msgs/include/**",
+        "/home/awaleed152/install/ros_its_msgs/include/**",
+        "/opt/ros/foxy/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

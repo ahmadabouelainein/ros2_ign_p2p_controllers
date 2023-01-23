@@ -1,0 +1,64 @@
+[0.302s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'list', '-p', '--base-paths', '/home/awaleed152/ros2_ign_diffdrive']
+[0.302s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], base_paths=['/home/awaleed152/ros2_ign_diffdrive'], build_base='build', ignore_user_meta=False, log_base=None, log_level=None, main=<bound method ListVerb.main of <colcon_package_information.verb.list.ListVerb object at 0x7f4850229c70>>, metas=['./colcon.meta'], names_only=False, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, paths=None, paths_only=True, topological_graph=False, topological_graph_density=False, topological_graph_dot=False, topological_graph_dot_cluster=False, topological_graph_dot_include_skipped=False, topological_graph_legend=False, topological_order=False, verb_extension=<colcon_package_information.verb.list.ListVerb object at 0x7f4850229c70>, verb_name='list', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f485012d3d0>)
+[0.346s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.346s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.346s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.346s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.346s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.346s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/awaleed152/ros2_ign_diffdrive'
+[0.346s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extensions ['ignore', 'ignore_ament_install']
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'ignore'
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'ignore_ament_install'
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extensions ['colcon_pkg']
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'colcon_pkg'
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extensions ['colcon_meta']
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'colcon_meta'
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extensions ['ros']
+[0.347s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'ros'
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extensions ['cmake', 'python']
+[0.363s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'cmake'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'python'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extensions ['python_setup_py']
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive) by extension 'python_setup_py'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/log) by extensions ['ignore', 'ignore_ament_install']
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/log) by extension 'ignore'
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/log) ignored
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extensions ['ignore', 'ignore_ament_install']
+[0.364s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'ignore'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'ignore_ament_install'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extensions ['colcon_pkg']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'colcon_pkg'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extensions ['colcon_meta']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'colcon_meta'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extensions ['ros']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'ros'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extensions ['cmake', 'python']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'cmake'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'python'
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extensions ['python_setup_py']
+[0.365s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src) by extension 'python_setup_py'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extensions ['ignore', 'ignore_ament_install']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'ignore'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'ignore_ament_install'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extensions ['colcon_pkg']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'colcon_pkg'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extensions ['colcon_meta']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'colcon_meta'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extensions ['ros']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'ros'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extensions ['cmake', 'python']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'cmake'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'python'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extensions ['python_setup_py']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive) by extension 'python_setup_py'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extensions ['ignore', 'ignore_ament_install']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extension 'ignore'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extension 'ignore_ament_install'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extensions ['colcon_pkg']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extension 'colcon_pkg'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extensions ['colcon_meta']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extension 'colcon_meta'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extensions ['ros']
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task) by extension 'ros'
+[0.371s] DEBUG:colcon.colcon_core.package_identification:Package '/home/awaleed152/ros2_ign_diffdrive/src/diff_drive/mini_task' with type 'ros.ament_python' and name 'mini_task'
+[0.371s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
