@@ -1,0 +1,7 @@
+diff_drive/odometry:
+  ros__parameters: # NOTE the TWO underscores!
+    axislen: 203.833 # double needs to be specified with decimal point!
+    wheelradius: 40.8
+diff_drive/wheel_driver:
+  ros__parameters:
+    angularacc: 0.25
