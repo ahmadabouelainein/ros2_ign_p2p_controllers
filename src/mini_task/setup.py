@@ -13,6 +13,8 @@ setup(
         ('share/' + package_name, ['package.xml']),
    	(os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
    	(os.path.join('share', package_name, 'model'), glob('model/*.sdf')),
+   	(os.path.join('share', package_name, 'model'), glob('model/urdf/*')),
+   	(os.path.join('share', package_name, 'model'), glob('model/meshes/*')),
    	(os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
         
     ],

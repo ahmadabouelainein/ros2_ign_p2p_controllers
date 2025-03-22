@@ -13,7 +13,7 @@ def generate_launch_description():
            ':'.join([os.environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
                      os.environ.get('LD_LIBRARY_PATH', default='')])}
 
-    spawn = Node(package='ros_ign_bridge', executable='parameter_bridge',
+    spawn = Node(package='ros_gz_bridge', executable='parameter_bridge',
                  arguments=[
                      '/diff_drive/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist'],
 
