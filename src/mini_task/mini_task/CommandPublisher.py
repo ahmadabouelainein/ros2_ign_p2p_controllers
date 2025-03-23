@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 import yaml
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import TwistStamped
 from ament_index_python.packages import get_package_share_directory
 
 
@@ -9,7 +9,7 @@ class TwistCommandPublisher(Node):
     def __init__(self, dict):
         super().__init__('command_publisher')
         self.data = dict
-        self.publisher = self.create_publisher(Twist, 'diff_drive/cmd_vel', 1)
+        self.publisher = self.create_publisher(TwistStamped, '/ackermann_steering_controller/reference', 1)
         timer = self.create_timer(1, self.timer_callback)
 
     def subscription_callback(self, data):
@@ -18,10 +18,10 @@ class TwistCommandPublisher(Node):
 
     def timer_callback(self):
         """A callback to execute at a specified interval."""
-        move_cmd = Twist()  # Creating a message in python
-        move_cmd = Twist()
-        move_cmd.linear.x = self.data["linear"]["x"]
-        move_cmd.angular.z = self.data["angular"]["z"]
+        move_cmd = TwistStamped()
+        move_cmd.header.stamp = rclpy.time.Time()
+        move_cmd.twist.linear.x = self.data["linear"]["x"]
+        move_cmd.twist.angular.z = self.data["angular"]["z"]
         # Publishing the message (Usually defined data as well)
         self.publisher.publish(move_cmd)
 

@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<robot name="forklift_robot">
+<robot name="forklift_robot" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <link name="base_link">
     <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
     <visual>
       <geometry>
-        <mesh filename="package://mini_task/model/base_link.dae" />
+        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/base_link.dae" />
       </geometry>
     </visual>
     <collision>
@@ -24,12 +24,12 @@
     <origin xyz="1.0795 -0.368600 1" rpy="0 0 0" />
     <visual>
       <geometry>
-        <mesh filename="package://mini_task/model/fork.dae" />
+        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/fork.dae" />
       </geometry>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://mini_task/model/fork.dae" />
+        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/fork.dae" />
       </geometry>
     </collision>
     <inertial>
@@ -41,12 +41,12 @@
   <link name="wheel_back_left">
     <visual>
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </collision>
     <inertial>
@@ -58,12 +58,12 @@
   <link name="wheel_back_right">
     <visual>
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </collision>
     <inertial>
@@ -75,12 +75,12 @@
   <link name="wheel_front_left">
     <visual>
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </visual>
     <collision>
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </collision>
     <inertial>
@@ -92,13 +92,13 @@
   <link name="wheel_front_right">
     <visual>
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="1.5707 0 0" />
       <geometry>
-        <cylinder radius="0.2" length="0.2" />
+        <cylinder radius="0.21" length="0.05" />
       </geometry>
     </collision>
     <inertial>
@@ -107,7 +107,7 @@
     </inertial>
   </link>
 
-  <joint name="base_to_fork" type="prismatic">
+  <joint name="fork_joint" type="prismatic">
     <origin rpy="0 0 0" xyz="2.159 0.175 0" />
     <parent link="base_link" />
     <child link="fork" />
@@ -118,67 +118,82 @@
       effort="100"
     />
     <axis xyz="0 0 1" />
+    <dynamics damping="0.2" />
   </joint>
 
-  <joint name="base_to_wheel_back_left" type="continuous">
+  <joint name="rear_left_wheel_joint" type="continuous">
     <origin xyz="0.3 0.9 0.2" rpy="1.57 0 0" />
     <parent link="base_link" />
     <child link="wheel_back_left" />
-    <!-- <limit
-      velocity="10"
-      effort="1000"
-    /> -->
     <axis xyz="0 0 1" />
+    <dynamics damping="0.2" />
   </joint>
 
 
-  <joint name="base_to_wheel_back_right" type="continuous">
+  <joint name="rear_right_wheel_joint" type="continuous">
     <origin xyz="0.3 0.1 0.2" rpy="01.57 0 0" />
     <parent link="base_link" />
     <child link="wheel_back_right" />
-    <!-- <limit
-      velocity="10"
-      effort="1000"
-    /> -->
     <axis xyz="0 0 1" />
+    <dynamics damping="0.2" />
   </joint>
 
-  <joint name="base_to_wheel_front_left" type="continuous">
-    <origin xyz="1.75 0.9 0.2" rpy="1.57 0 0" />
+  <joint name="left_wheel_steering_joint" type="continuous">
+    <origin xyz="1.8 0.9 0.2" rpy="1.57 0 0" />
     <parent link="base_link" />
     <child link="wheel_front_left" />
-    <!-- <limit
-      velocity="10"
-      effort="1000"
-    /> -->
-    <axis xyz="0 0 1" />
+    <axis xyz="0 1 0" />
+    <dynamics damping="0.2" />
   </joint>
 
-  <joint name="base_to_wheel_front_right" type="continuous">
-    <origin xyz="01.75 0.1 0.2" rpy="1.57 0 0" />
+  <joint name="right_wheel_steering_joint" type="continuous">
+    <origin xyz="01.8 0.1 0.2" rpy="1.57 0 0" />
     <parent link="base_link" />
     <child link="wheel_front_right" />
-    <!-- <limit
-      velocity="10"
-      effort="1000"
-    /> -->
-    <axis xyz="0 0 1" />
+    <axis xyz="0 1 0" />
+    <dynamics damping="0.2" />
   </joint>
 
-  <sensor name="camera_sensor" update_rate="20">
-    <parent link="base_link" />
-    <origin xyz="0 0 1.5" rpy="0 0 0" />
-    <camera>
-      <image width="640" height="480" hfov="1.5708" format="RGB8" near="0.01" far="50.0" />
-    </camera>
-  </sensor>
+  <ros2_control name="IgnitionSystem" type="system">
+    <hardware>
+      <plugin>ign_ros2_control/IgnitionSystem</plugin>
+    </hardware>
+    <joint name="rear_left_wheel_joint">
+      <command_interface name="velocity" />
+      <state_interface name="velocity" />
+      <state_interface name="position" />
+    </joint>
+    <joint name="rear_right_wheel_joint">
+      <command_interface name="velocity" />
+      <state_interface name="velocity" />
+      <state_interface name="position" />
+    </joint>
+    <joint name="left_wheel_steering_joint">
+      <command_interface name="position" />
+      <state_interface name="position" />
+    </joint>
+    <joint name="right_wheel_steering_joint">
+      <command_interface name="position" />
+      <state_interface name="position" />
+    </joint>
+    <joint name="fork_joint">
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">2</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">0</param>
+      </state_interface>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
+    </joint>
+  </ros2_control>
 
-  <sensor name="ray_sensor" update_rate="20">
-    <parent link="base_link" />
-    <origin xyz="0 0 1.5" rpy="0 0 0" />
-    <ray>
-      <horizontal samples="100" resolution="1" min_angle="-1.5708" max_angle="1.5708" />
-      <vertical samples="1" resolution="1" min_angle="0" max_angle="0" />
-    </ray>
-  </sensor>
+  <gazebo>
+    <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+      <parameters>$(find mini_task)/config/ros2_controller.yaml</parameters>
+    </plugin>
+  </gazebo>
+
+
 </robot>

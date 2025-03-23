@@ -27,37 +27,17 @@ def generate_launch_description():
     # Launch Arguments
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
+    # Get URDF via xacro
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name='xacro')]),
             ' ',
             PathJoinSubstitution(
-                [FindPackageShare('mini_task'), 'model', 'forklift_robot.xacro.urdf']
+                [FindPackageShare('ign_ros2_control_demos'),
+                 'urdf', 'test_ackermann_drive.xacro.urdf']
             ),
         ]
     )
-    urdf_tutorial_path = FindPackageShare('urdf_tutorial')
-    default_rviz_config_path = PathJoinSubstitution([urdf_tutorial_path, 'rviz', 'urdf.rviz'])
-
-    # These parameters are maintained for backwards compatibility
-    gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
-                                    description='Flag to enable joint_state_publisher_gui')
-    rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=default_rviz_config_path,
-                                     description='Absolute path to rviz config file')
-    model_arg = DeclareLaunchArgument(name='model', default_value=robot_description_content,
-                                        description='Path to robot urdf file relative to urdf_tutorial package')
-
-
-
-    rviz_launch = IncludeLaunchDescription(
-        PathJoinSubstitution([FindPackageShare('urdf_launch'), 'launch', 'display.launch.py']),
-        launch_arguments={
-            'urdf_package': 'urdf_tutorial',
-            'urdf_package_path': LaunchConfiguration('model'),
-            'rviz_config': LaunchConfiguration('rvizconfig'),
-            'jsp_gui': LaunchConfiguration('gui')}.items()
-    )
-    # Get URDF via xacro
     robot_description = {'robot_description': robot_description_content}
 
     node_robot_state_publisher = Node(
@@ -94,7 +74,7 @@ def generate_launch_description():
         arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'],
         output='screen'
     )
-    commands = Node(package='ign_ros2_control_demos', executable='example_ackermann_drive')
+
     return LaunchDescription([
         bridge,
         # Launch gazebo environment
@@ -119,11 +99,6 @@ def generate_launch_description():
         node_robot_state_publisher,
         gz_spawn_entity,
         # Launch Arguments
-        commands,
-        # rviz_arg,
-        # gui_arg,
-        # model_arg,
-        # rviz_launch,
         DeclareLaunchArgument(
             'use_sim_time',
             default_value=use_sim_time,
