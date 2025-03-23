@@ -25,7 +25,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'CommandPublisher = mini_task.CommandPublisher:main'
+            'CommandPublisher = mini_task.CommandPublisher:main',
+            'P2PController = mini_task.P2PController:main',
         ],
     },
 )
