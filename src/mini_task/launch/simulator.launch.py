@@ -99,7 +99,6 @@ def generate_launch_description():
         arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'],
         output='screen'
     )
-    commands = Node(package='ign_ros2_control_demos', executable='example_ackermann_drive')
     return LaunchDescription([
         bridge,
         # Launch gazebo environment
