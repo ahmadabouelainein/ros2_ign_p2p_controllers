@@ -66,6 +66,12 @@ def generate_launch_description():
         output='screen',
         parameters=[robot_description]
     )
+    p2p_controller = Node(
+        package='mini_task',
+        executable='P2PController',
+        output='screen',
+        parameters=[robot_description]
+    )
 
     gz_spawn_entity = Node(
         package='ros_gz_sim',
@@ -122,6 +128,7 @@ def generate_launch_description():
         ),
         node_robot_state_publisher,
         gz_spawn_entity,
+        p2p_controller,
         # Launch Arguments
         # commands,
         # rviz_arg,

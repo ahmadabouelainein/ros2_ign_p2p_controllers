@@ -24,21 +24,22 @@ class P2PController(Node):
             self.goal_callback,
             callback_group=ReentrantCallbackGroup()
         )
-        self.position_error_threshold = 0.01  # meters
+        self.position_error_threshold = 0.5  # meters
         self.yaw_error_threshold = 0.02  # radians
 
         # Control gains for Lyapunov-based controller
-        self.k_v = 0.8  # Linear velocity gain
-        self.k_theta = 1.0  # Heading correction gain
-        self.k_y = -1.5  # Lateral error gain (negative for stability)
+        self.k_v = 0.5  # Linear velocity gain
+        self.k_theta = 1.5  # Heading correction gain
+        self.k_y = -2  # Lateral error gain (negative for stability)
 
     def goal_callback(self, goal_handle):
         self.get_logger().info('Received goal request')
         goal = goal_handle.request.pose 
         
+        iteration_count = 0
         while not goal_handle.is_cancel_requested:
-            ex = goal.pose.position.x - self.current_pose.position.x
-            ey = goal.pose.position.y - self.current_pose.position.y
+            ex = goal.pose.position.x - self.current_pose.position.x 
+            ey = goal.pose.position.y - self.current_pose.position.y 
             e_d = math.sqrt(ex**2 + ey**2)  # Euclidean error (magnitude)
 
             (_, _, theta) = euler_from_quaternion([
@@ -48,21 +49,21 @@ class P2PController(Node):
                 self.current_pose.orientation.w
             ])
 
-            # Compute robot's heading vector
-            heading_x = math.cos(theta)
-            heading_y = math.sin(theta)
+            # # Compute robot's heading vector
+            # heading_x = math.cos(theta)
+            # heading_y = math.sin(theta)
 
-            # Compute signed Euclidean error
-            dot_product = ex * heading_x + ey * heading_y
-            e_d = math.copysign(e_d, dot_product)  # Ensure correct direction
+            # # Compute signed Euclidean error
+            # dot_product = ex * heading_x + ey * heading_y
+            # e_d = math.copysign(ex, dot_product)  # Ensure correct direction
 
             
             angle_to_goal = math.atan2(ey, ex)
-            yaw_error = normalize_angle(angle_to_goal - theta)
+            yaw_error = angle_to_goal - theta
             e_y = -ex * math.sin(theta) + ey * math.cos(theta)  # Lateral error
             
             # Lyapunov control law
-            v = self.k_v * e_d *-1 # Linear velocity
+            v = self.k_v * e_d # Linear velocity
             omega = self.k_y * e_y + self.k_theta * yaw_error  # Angular velocity
             
             # Limit velocities
@@ -80,11 +81,15 @@ class P2PController(Node):
             feedback_msg = NavigateToPose.Feedback()
             feedback_msg.current_pose.pose = self.current_pose
             goal_handle.publish_feedback(feedback_msg)
-            
-            self.get_logger().info(f'Error: {e_d:.3f}m, Yaw Error: {math.degrees(yaw_error):.2f}°')
+        
+            iteration_count += 1
+            if iteration_count % 100 == 0:
+                self.get_logger().info(f'Euclidean Error: {e_d:.3f}m, Ex: {ex:.3f}m, Ey: {ey:.3f}m, Yaw Error: {math.degrees(yaw_error):.2f}°')
+                iteration_count = 0
             rclpy.spin_once(self)
+
             
-            if self.is_goal_reached(e_d, yaw_error):
+            if self.is_goal_reached(e_d):
                 break
         
         # Stop the robot
@@ -103,8 +108,8 @@ class P2PController(Node):
         # Update current_pose based on odometry data
         self.current_pose = msg.pose.pose
 
-    def is_goal_reached(self, error, yaw_error):
-        if error < self.position_error_threshold and abs(yaw_error) < self.yaw_error_threshold:
+    def is_goal_reached(self, error):
+        if error < self.position_error_threshold:
             self.get_logger().info('Goal reached')
             return True
         return False
