@@ -14,14 +14,14 @@
     <visual>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/base_link.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/base_link.dae" />
       </geometry>
       <material name="Teal" />
     </visual>
     <collision>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/base_link.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/base_link.dae" />
       </geometry>
     </collision>
     <inertial>
@@ -38,14 +38,14 @@
     <visual>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/fork.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/fork.dae" />
       </geometry>
       <material name="Grey" />
     </visual>
     <collision>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/fork.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/fork.dae" />
       </geometry>
     </collision>
     <inertial>
@@ -73,7 +73,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -109,7 +109,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -145,7 +145,7 @@
   <link name="wheel_front_left">
     <visual>
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -179,7 +179,7 @@
   <link name="wheel_front_right">
     <visual>
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -247,7 +247,7 @@
   <link name="front_left_wheel">
     <visual>
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -274,7 +274,7 @@
   <link name="front_right_wheel">
     <visual>
       <geometry>
-        <mesh filename="file:///home/ahmad/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
+        <mesh filename="file://current_pose/workspaces/ros2-template-workspace/ros2_ign_diffdrive/src/mini_task/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>

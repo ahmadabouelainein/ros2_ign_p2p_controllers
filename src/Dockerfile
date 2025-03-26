@@ -35,6 +35,7 @@ RUN apt-get update && \
     apt-get install -y python3-colcon-common-extensions && \
     apt-get install -y python3-vcstool && \
     apt-get install -y wget && \
+    apt-get install -y ros-humble-tf-transformations && \
     apt-get install -y ros-humble-ament-lint python3-autopep8 && \
     apt-get install -y ros-humble-launch-testing ros-humble-launch-testing-ament-cmake ros-humble-launch-testing-ros && \
     apt-get install -y nano && \
@@ -95,7 +96,7 @@ ENV DEBIAN_FRONTEND=dialog
 ARG WORKSPACE=/workspaces/ros2-template-workspace
 RUN echo "source /opt/ros/humble/setup.bash" >> /home/$USERNAME/.bashrc && \
 mkdir -p ${WORKSPACE} && cd ${WORKSPACE} &&\
-git clone https://github.com/ahmadabouelainein/ros2_ign_diffdrive && \
+git clone -b feature/containarize https://github.com/ahmadabouelainein/ros2_ign_diffdrive && \
 cd ${WORKSPACE}/ros2_ign_diffdrive/src && sudo rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 
 SHELL [ "/bin/bash" , "-c" ]
