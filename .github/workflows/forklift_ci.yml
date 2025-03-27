@@ -54,7 +54,7 @@ jobs:
           rosdep install --from-paths src -y --ignore-src
           colcon build
           colcon test --packages-select mini_task
-          colcon test-results --all --verbose
+          colcon test-result --all --verbose
         
 
       
