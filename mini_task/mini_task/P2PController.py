@@ -1,19 +1,36 @@
 import rclpy
+import math 
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.callback_groups import ReentrantCallbackGroup, MutuallyExclusiveCallbackGroup
-from rclpy.action import ActionServer, GoalResponse, CancelResponse
-from geometry_msgs.msg import TwistStamped, PoseStamped, Pose
+from rclpy.action import ActionServer, CancelResponse
+from geometry_msgs.msg import TwistStamped, Pose
 from nav_msgs.msg import Odometry
 from nav2_msgs.action import NavigateToPose
-import math 
 from tf_transformations import euler_from_quaternion
 
 class P2PController(Node):
+    """
+    P2PController class for controlling a robot to reach a specified goal.
+    Uses a Lyapunov-based control approach.
+    """
     def __init__(self):
+        """
+        Initializes the P2PController node and sets up necessary publishers, subscribers, and action server.
+
+        The node subscribes to the '/ackermann_steering_controller/odometry' topic to receive odometry data,
+        and publishes velocity commands to the '/ackermann_steering_controller/reference' topic.
+        It also creates an action server for handling navigation goals using the 'NavigateToPose' action type.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+        """
         super().__init__('p2p_controller')
         self.get_logger().info('P2P controller with Lyapunov control initialized')
-        
+
         self.publisher = self.create_publisher(TwistStamped, '/ackermann_steering_controller/reference', 10, callback_group=ReentrantCallbackGroup())
         self.odom_subscriber = self.create_subscription(Odometry, '/ackermann_steering_controller/odometry', self.odom_callback, 10, callback_group=MutuallyExclusiveCallbackGroup())
         self.current_pose = Pose()
@@ -33,9 +50,20 @@ class P2PController(Node):
         self.k_y = -2  # Lateral error gain (negative for stability)
 
     def goal_callback(self, goal_handle):
+        """
+        Callback function for handling navigation goals. This function calculates the error between the current pose and the goal pose,
+        computes the control inputs (linear velocity and angular velocity) using a Lyapunov-based controller, and publishes the velocity
+        commands to the robot. It also provides feedback on the current pose and checks for goal cancellation.
+
+        Parameters:
+        goal_handle (rclpy.action.GoalHandle): The goal handle for the navigation action.
+
+        Returns:
+        CancelResponse.ACCEPT or None: Returns CancelResponse.ACCEPT if the goal is cancelled, otherwise returns None.
+        """
         self.get_logger().info('Received goal request')
         goal = goal_handle.request.pose 
-        
+
         iteration_count = 0
         while not goal_handle.is_cancel_requested:
             ex = goal.pose.position.x - self.current_pose.position.x 
@@ -107,19 +135,38 @@ class P2PController(Node):
 
 
     def odom_callback(self, msg):
-        # Update current_pose based on odometry data
+        """
+        Update current_pose based on odometry data
+        """
         self.current_pose = msg.pose.pose
 
     def is_goal_reached(self, error):
+        """
+        check if goal is reached
+        """
         if error < self.position_error_threshold:
             self.get_logger().info('Goal reached')
             return True
         return False
 
 def normalize_angle(angle):
+    """
+        Update current_pose based on odometry data
+
+        """
     return (angle + math.pi) % (2 * math.pi) - math.pi
 
 def main(args=None):
+    """
+    Main function to initialize the ROS2 node, create an instance of P2PController,
+    and run the ROS2 executor.
+
+    Parameters:
+    args (list, optional): Command-line arguments to pass to rclpy.init(). Defaults to None.
+
+    Returns:
+    None
+    """
     rclpy.init(args=args)
     p2p_controller = P2PController()
     executor = MultiThreadedExecutor()
