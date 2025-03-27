@@ -1,4 +1,4 @@
-name: forklift_build
+name: forklift_build_and_unittest
 
 on:
   # Triggered whenever push on any branch occurs
