@@ -93,14 +93,14 @@ RUN apt-get update \
 ENV DEBIAN_FRONTEND=dialog
 ARG WORKSPACE=/ws/ros2_ign_diffdrive
 RUN echo "source /opt/ros/humble/setup.bash" >> /home/$USERNAME/.bashrc && \
-    mkdir -p ${WORKSPACE} && cd ${WORKSPACE} &&\
+    mkdir -p ${WORKSPACE}/src && cd ${WORKSPACE} &&\
     git clone -b feature/containerize https://github.com/ahmadabouelainein/ros2_ign_diffdrive && \
     cd ${WORKSPACE}/src && sudo rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 
 SHELL [ "/bin/bash" , "-c" ]
 RUN source /opt/ros/${ROS_DISTRO}/setup.bash && cd ${WORKSPACE}/ && \
-    colcon build &&  echo "source install/setup.bash" >> /home/$USERNAME/.bashrc
+    colcon build
 ENV USERNAME=${USERNAME}    
-WORKDIR ${WORKSPACE}/
+WORKDIR ${WORKSPACE}
 CMD ["/bin/bash", "-c", "source /opt/ros/$ROS_DISTRO/setup.bash && source $WORKSPACE/install/setup.bash && exec bash"]
-# ENTRYPOINT /bin/bash
+ENTRYPOINT /bin/bash
