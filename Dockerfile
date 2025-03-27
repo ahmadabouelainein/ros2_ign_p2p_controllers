@@ -75,7 +75,6 @@ RUN apt-get update && \
 ARG USERNAME=ahmad
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
-
 # Create a non-root user
 RUN groupadd --gid $USER_GID $USERNAME && \
     useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME && \
@@ -83,8 +82,7 @@ RUN groupadd --gid $USER_GID $USERNAME && \
     apt-get install -y sudo && \
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
     chmod 0440 /etc/sudoers.d/$USERNAME && \
-    echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc && \
-    echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/$USERNAME/.bashrc 
+    echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc
 
 # Cleanup
 RUN apt-get update \
@@ -93,14 +91,16 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV DEBIAN_FRONTEND=dialog
-ARG WORKSPACE=/workspaces/ros2-template-workspace
+ARG WORKSPACE=/ws/ros2_ign_diffdrive
 RUN echo "source /opt/ros/humble/setup.bash" >> /home/$USERNAME/.bashrc && \
-mkdir -p ${WORKSPACE} && cd ${WORKSPACE} &&\
-git clone -b feature/containarize https://github.com/ahmadabouelainein/ros2_ign_diffdrive && \
-cd ${WORKSPACE}/ros2_ign_diffdrive/src && sudo rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
+    mkdir -p ${WORKSPACE} && cd ${WORKSPACE} &&\
+    git clone -b feature/containerize https://github.com/ahmadabouelainein/ros2_ign_diffdrive && \
+    cd ${WORKSPACE}/src && sudo rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 
 SHELL [ "/bin/bash" , "-c" ]
-RUN source /opt/ros/${ROS_DISTRO}/setup.bash && cd ${WORKSPACE}/ros2_ign_diffdrive/ && colcon build
-# colcon build
-ENV DISPLAY=:0
-ENTRYPOINT /bin/bash
+RUN source /opt/ros/${ROS_DISTRO}/setup.bash && cd ${WORKSPACE}/ && \
+    colcon build &&  echo "source install/setup.bash" >> /home/$USERNAME/.bashrc
+ENV USERNAME=${USERNAME}    
+WORKDIR ${WORKSPACE}/
+CMD ["/bin/bash", "-c", "source /opt/ros/$ROS_DISTRO/setup.bash && source $WORKSPACE/install/setup.bash && exec bash"]
+# ENTRYPOINT /bin/bash
