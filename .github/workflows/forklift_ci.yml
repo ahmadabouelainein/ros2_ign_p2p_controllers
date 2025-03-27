@@ -10,7 +10,7 @@ on:
 
 
 jobs:
-  build:
+  build-and-unittest:
     # Create a container of the latest Ubuntu, other values could be
     # ubuntu-latest, ubuntu-22.04, etc.
     runs-on: ubuntu-22.04
@@ -53,10 +53,7 @@ jobs:
           cd ros_ws
           rosdep install --from-paths src -y --ignore-src
           colcon build
-      - name: Run unit tests
-        run: |
-          source /opt/ros/humble/setup.bash
-          colcon test --packages-select mini_task
+          colcon test --packges-select mini_task
           colcon test-results --all --verbose
         
 
