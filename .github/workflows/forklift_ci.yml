@@ -1,4 +1,4 @@
-name: project_legion_build
+name: forklift_build
 
 on:
   # Triggered whenever push on any branch occurs
@@ -53,4 +53,12 @@ jobs:
           cd ros_ws
           rosdep install --from-paths src -y --ignore-src
           colcon build
+      - name: Run unit tests
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon test --packages-select mini_task
+          colcon test-results --all --verbose
+        
+
+      
           
