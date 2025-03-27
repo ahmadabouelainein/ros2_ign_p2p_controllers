@@ -102,5 +102,7 @@ RUN source /opt/ros/${ROS_DISTRO}/setup.bash && cd ${WORKSPACE}/ && \
     colcon build
 ENV USERNAME=${USERNAME}    
 WORKDIR ${WORKSPACE}
-CMD ["/bin/bash", "-c", "source /opt/ros/$ROS_DISTRO/setup.bash && source $WORKSPACE/install/setup.bash && exec bash"]
-ENTRYPOINT /bin/bash
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ros2 launch mini_task simulator.launch.py
