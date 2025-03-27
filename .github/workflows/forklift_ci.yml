@@ -1,11 +1,8 @@
 name: project_legion_build
 
 on:
-  # Triggered whenever push to the master branch
+  # Triggered whenever push on any branch occurs
   push:
-    branches:
-      - main
-
   # Triggered whenever a pull request is created on master
   pull_request:
     branches: ["main"]
@@ -16,7 +13,7 @@ jobs:
   build:
     # Create a container of the latest Ubuntu, other values could be
     # ubuntu-latest, ubuntu-22.04, etc.
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       
