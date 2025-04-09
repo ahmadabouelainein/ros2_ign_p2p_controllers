@@ -38,7 +38,7 @@ git clone https://github.com/ahmadabouelainein/ros2_ign_diffdrive/
 2. To build the Docker image:
     
 ```
-docker build -t p2p_forklift:nav  .
+docker build -t p2p_forklift:nav ros2_ign_p2p_controllers/
 ```
 
 3. To run the system in Docker. Note that this This would automatically run the launch file which opens gazebo with the forklift loaded in it:
