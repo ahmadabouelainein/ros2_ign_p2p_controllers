@@ -94,7 +94,7 @@ ENV DEBIAN_FRONTEND=dialog
 ARG WORKSPACE=/ws/ros2_ign_diffdrive
 RUN echo "source /opt/ros/humble/setup.bash" >> /home/$USERNAME/.bashrc && \
     mkdir -p ${WORKSPACE}/src && cd ${WORKSPACE} &&\
-    git clone -b feature/containerize https://github.com/ahmadabouelainein/ros2_ign_diffdrive && \
+    git clone -b feature/forklift https://github.com/ahmadabouelainein/ros2_ign_diffdrive && \
     cd ${WORKSPACE}/src && sudo rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 
 SHELL [ "/bin/bash" , "-c" ]

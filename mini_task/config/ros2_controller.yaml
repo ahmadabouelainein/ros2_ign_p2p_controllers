@@ -9,13 +9,11 @@ controller_manager:
       type: ackermann_steering_controller/AckermannSteeringController
     
     fork_controller:
-      type: forward_command_controller/ForwardCommandController
-      
+      type: position_controllers/JointGroupPositionController      
 fork_controller:
-   ros__parameters:
+  ros__parameters:
     joints:
       - fork_joint
-    interface_name: position
 
    
 ackermann_steering_controller:

@@ -14,14 +14,14 @@
     <visual>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/base_link.dae" />
+        <mesh filename="file://$(find mini_task)/model/base_link.dae" />
       </geometry>
       <material name="Teal" />
     </visual>
     <collision>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/base_link.dae" />
+        <mesh filename="file://$(find mini_task)/model/base_link.dae" />
       </geometry>
     </collision>
     <inertial>
@@ -38,18 +38,18 @@
     <visual>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/fork.dae" />
+        <mesh filename="file://$(find mini_task)/model/fork.dae" />
       </geometry>
       <material name="Grey" />
     </visual>
     <collision>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/fork.dae" />
+        <mesh filename="file://$(find mini_task)/model/fork.dae" />
       </geometry>
     </collision>
     <inertial>
-      <mass value="100" />
+      <mass value="10" />
       <inertia ixx="0.2" ixy="0" ixz="0" iyy="0.3" iyz="0" izz="0.4" />
     </inertial>
 
@@ -73,7 +73,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="file://$(find mini_task)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -109,7 +109,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="file://$(find mini_task)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -145,7 +145,7 @@
   <link name="wheel_front_left">
     <visual>
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="file://$(find mini_task)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -179,7 +179,7 @@
   <link name="wheel_front_right">
     <visual>
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="file://$(find mini_task)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -247,7 +247,7 @@
   <link name="front_left_wheel">
     <visual>
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="file://$(find mini_task)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -274,7 +274,7 @@
   <link name="front_right_wheel">
     <visual>
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="file://$(find mini_task)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -320,16 +320,21 @@
       <state_interface name="position" />
     </joint>
     <joint name="fork_joint">
-      <command_interface name="position"/>
+      <command_interface name="position">
+        <param name="min">0</param>
+        <param name="max">2</param>
+      </command_interface>
       <state_interface name="position">
-        <param name="initial_value">0.2</param>
+        <param name="initial_value">0</param>
       </state_interface>
+      <state_interface name="velocity" />
+      <state_interface name="effort" />
     </joint>
   </ros2_control>
 
   <gazebo>
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-      <parameters>$(find mini_task)/config/ros2_controller.yaml</parameters>
+      <parameters>file://$(find mini_task)/config/ros2_controller.yaml</parameters>
     </plugin>
   </gazebo>
 
