@@ -1,6 +1,3 @@
-# Note
-The gz_ros_control directory is a copy of this [repo](https://github.com/ros-controls/gz_ros2_control/tree/humble) 
-
 # Forklift Control with ROS2 and Gazebo
 
 This repository provides a solution for simulating and controlling a forklift model in Gazebo using ROS2. The project includes several key features that enhance the forklift’s simulation and control, ensuring a seamless integration into the Gazebo environment.
