@@ -4,8 +4,9 @@ on:
   # Triggered whenever push on any branch occurs
   push:
   # Triggered whenever a pull request is created on master
+    branches: ["feature/forklift"]
   pull_request:
-    branches: ["main"]
+    branches: ["feature/forklift"]
     types: [opened]
 
 
