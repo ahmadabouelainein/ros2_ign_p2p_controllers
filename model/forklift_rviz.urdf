@@ -14,14 +14,14 @@
     <visual>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/base_link.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/base_link.dae" />
       </geometry>
       <material name="Teal" />
     </visual>
     <collision>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/base_link.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/base_link.dae" />
       </geometry>
     </collision>
     <inertial>
@@ -30,7 +30,7 @@
     </inertial>
   </link>
   <joint name="base_link_to_chassis" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.1" />
+    <origin rpy="0 0 0" xyz="0 0 0" />
     <parent link="base_link" />
     <child link="chassis" />
   </joint>
@@ -38,14 +38,14 @@
     <visual>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/fork.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/fork.dae" />
       </geometry>
       <material name="Grey" />
     </visual>
     <collision>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/fork.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/fork.dae" />
       </geometry>
     </collision>
     <inertial>
@@ -73,7 +73,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -109,7 +109,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -145,7 +145,7 @@
   <link name="wheel_front_left">
     <visual>
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -179,7 +179,7 @@
   <link name="wheel_front_right">
     <visual>
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -214,7 +214,7 @@
   <link name="left_wheel_steering">
     <inertial>
       <mass value="0.1" />
-      <inertia ixx="0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+      <inertia ixx="0.002" ixy="0.0" ixz="0.0" iyy="0.002" iyz="0.0" izz="0.002" />
     </inertial>
   </link>
 
@@ -230,7 +230,7 @@
   <link name="right_wheel_steering">
     <inertial>
       <mass value="0.1" />
-      <inertia ixx="0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+      <inertia ixx="0.002" ixy="0.0" ixz="0.0" iyy="0.002" iyz="0.0" izz="0.002" />
     </inertial>
   </link>
 
@@ -247,7 +247,7 @@
   <link name="front_left_wheel">
     <visual>
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -274,7 +274,7 @@
   <link name="front_right_wheel">
     <visual>
       <geometry>
-        <mesh filename="file://$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
+        <mesh filename="package://ros2_ign_p2p_controllers/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -319,7 +319,7 @@
       <command_interface name="position" />
       <state_interface name="position" />
     </joint>
-    <joint name="fork_joint">
+    <!-- <joint name="fork_joint">
       <command_interface name="position">
         <param name="min">0</param>
         <param name="max">2</param>
@@ -329,12 +329,29 @@
       </state_interface>
       <state_interface name="velocity" />
       <state_interface name="effort" />
+    </joint> -->
+  </ros2_control>
+
+
+  <ros2_control name="MockHardwareSystem" type="system">
+    <hardware>
+      <plugin>mock_components/GenericSystem</plugin>
+    </hardware>
+    <joint name="fork_joint">
+      <command_interface name="position" />
+      <command_interface name="velocity" />
+      <state_interface name="position">
+        <param name="initial_value">045</param>
+      </state_interface>
+      <state_interface name="velocity" />
+      <state_interface name="acceleration" />
     </joint>
   </ros2_control>
 
+
   <gazebo>
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-      <parameters>file://$(find ros2_ign_p2p_controllers)/config/ros2_controller.yaml</parameters>
+      <parameters>package://ros2_ign_p2p_controllers/config/ros2_controller.yaml</parameters>
     </plugin>
   </gazebo>
 

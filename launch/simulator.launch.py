@@ -32,12 +32,12 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name='xacro')]),
             ' ',
             PathJoinSubstitution(
-                [FindPackageShare('ros2_ign_p2p_controllers'), 'model', 'forklift_robot.xacro.urdf']
+                [FindPackageShare('ros2_ign_p2p_controllers'), 'model', 'forklift_robot.urdf.xacro']
             ),
         ]
     )
-    urdf_tutorial_path = FindPackageShare('urdf_tutorial')
-    default_rviz_config_path = PathJoinSubstitution([urdf_tutorial_path, 'rviz', 'urdf.rviz'])
+    ros2_ign_p2p_controllers = FindPackageShare('ros2_ign_p2p_controllers')
+    default_rviz_config_path = PathJoinSubstitution([ros2_ign_p2p_controllers, 'config', 'forklift.rviz'])
 
     # These parameters are maintained for backwards compatibility
     gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
@@ -51,11 +51,11 @@ def generate_launch_description():
 
     rviz_launch = IncludeLaunchDescription(
         PathJoinSubstitution([FindPackageShare('urdf_launch'), 'launch', 'display.launch.py']),
-        launch_arguments={
-            'urdf_package': 'urdf_tutorial',
-            'urdf_package_path': LaunchConfiguration('model'),
-            'rviz_config': LaunchConfiguration('rvizconfig'),
-            'jsp_gui': LaunchConfiguration('gui')}.items()
+        # launch_arguments={
+        #     'urdf_package': 'ros2_ign_p2p_controllers',
+        #     'urdf_package_path': LaunchConfiguration('model'),
+        #     'rviz_config': LaunchConfiguration('rvizconfig'),
+        #     'jsp_gui': LaunchConfiguration('gui')}.items()
     )
     # Get URDF via xacro
     robot_description = {'robot_description': robot_description_content}
@@ -70,7 +70,6 @@ def generate_launch_description():
         package='ros2_ign_p2p_controllers',
         executable='P2PController',
         output='screen',
-        parameters=[robot_description]
     )
 
     gz_spawn_entity = Node(
@@ -81,23 +80,48 @@ def generate_launch_description():
                    'ackermann', '-allow_renaming', 'true'],
     )
 
-    load_joint_state_broadcaster = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'joint_state_broadcaster'],
+#     load_joint_state_broadcaster = ExecuteProcess(
+#         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+#              'joint_state_broadcaster'],
+#         output='screen'
+#     )
+
+#     load_ackermann_controller = ExecuteProcess(
+#         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+#              'ackermann_steering_controller'],
+#         output='screen'
+#     )
+#     load_fork_controller = ExecuteProcess(
+#         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
+#              'fork_controller'],
+#         output='screen'
+#     )
+#     control_node = Node(
+#     package="controller_manager",
+#     executable="ros2_control_node",
+#     parameters=[robot_controllers],
+#     output="screen",
+# )
+    load_joint_state_broadcaster = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['joint_state_broadcaster', '--controller-manager', '/controller_manager'],
         output='screen'
     )
 
-    load_ackermann_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'ackermann_steering_controller'],
-        output='screen'
-    )
-    load_fork_controller = ExecuteProcess(
-        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-             'fork_controller'],
+    load_ackermann_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['ackermann_steering_controller', '--controller-manager', '/controller_manager'],
         output='screen'
     )
 
+    load_fork_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['fork_controller', '--controller-manager', '/controller_manager'],
+        output='screen'
+    )
     # Bridge
     bridge = Node(
         package='ros_gz_bridge',
@@ -129,8 +153,6 @@ def generate_launch_description():
         node_robot_state_publisher,
         gz_spawn_entity,
         p2p_controller,
-        # Launch Arguments
-        # commands,
         # rviz_arg,
         # gui_arg,
         # model_arg,
