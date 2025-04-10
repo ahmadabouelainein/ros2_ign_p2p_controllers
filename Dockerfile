@@ -105,4 +105,4 @@ WORKDIR ${WORKSPACE}
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ros2 launch mini_task simulator.launch.py
+CMD ros2 launch ros2_ign_p2p_controllers simulator.launch.py

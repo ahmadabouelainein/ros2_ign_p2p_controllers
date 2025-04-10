@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 from glob import glob
-package_name = 'mini_task'
+package_name = 'ros2_ign_p2p_controllers'
 
 setup(
     name=package_name,
@@ -25,8 +25,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'CommandPublisher = mini_task.CommandPublisher:main',
-            'P2PController = mini_task.P2PController:main',
+            'P2PController = ros2_ign_p2p_controllers.P2PController:main',
         ],
     },
 )

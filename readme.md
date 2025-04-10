@@ -12,6 +12,9 @@ This repository provides a solution for simulating and controlling a forklift mo
 ### 2. **Differential Drive Offset Point-to-Point (P2P) Controller**
    - A differential drive controller is implemented to move the forklift from one point to another using a point-to-point (P2P) control strategy.
    - The controller accounts for differential drive system offsets, ensuring precise control over the forklift’s movement.
+### 2. **Differential Drive Offset Point-to-Point (P2P) Controller**
+   - A differential drive controller is implemented to move the forklift from one point to another using a point-to-point (P2P) control strategy.
+   - The controller accounts for differential drive system offsets, ensuring precise control over the forklift’s movement.
 
 ### 3. **Unit and Integration Testing**
    - Unit tests are implemented for control algorithms and system behavior to ensure reliability.
@@ -19,6 +22,7 @@ This repository provides a solution for simulating and controlling a forklift mo
 
 ### 4. **Dockerized Setup**
    - The entire setup is containerized using Docker, providing a consistent and portable environment for easy deployment.
+   - A `Dockerfile` is included for building the container and detailed instructions are provided for running the system within a Docker container.
    - A `Dockerfile` is included for building the container and detailed instructions are provided for running the system within a Docker container.
 
 ## Setup and Installation
@@ -28,7 +32,11 @@ This repository provides a solution for simulating and controlling a forklift mo
 - **ROS2 Humble**: Make sure you have ROS2 installed on your system.
 - **Gazebo**: Install the appropriate version of Gazebo.
 - **Docker**: For containerizing the setup.
+- **ROS2 Humble**: Make sure you have ROS2 installed on your system.
+- **Gazebo**: Install the appropriate version of Gazebo.
+- **Docker**: For containerizing the setup.
 
+### Instructions
 ### Instructions
 
 1. Clone the repository:
@@ -36,7 +44,18 @@ This repository provides a solution for simulating and controlling a forklift mo
    ```
    git clone https://github.com/ahmadabouelainein/ros2_ign_diffdrive/
    ```
+   ```
+   git clone https://github.com/ahmadabouelainein/ros2_ign_diffdrive/
+   ```
 2. To build the Docker image:
+    ```
+    docker build -t p2p_forklift:nav  .
+    ```
+3. To run the system in Docker:
+    ```
+    docker run -it --rm --name p2p_container -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix p2p_forklift:nav 
+    ```
+    This would automatically run the launch file which opens gazebo with the forklift loaded in it. 
     ```
     docker build -t p2p_forklift:nav  .
     ```
@@ -105,6 +124,10 @@ ros2 launch mini_task simulator.launch.py
 
 Copyright © 2023 ahmadabouelainein \
 This project is available under the terms of [the MIT License](LICENSE).
+   
+
+
+
    
 
 

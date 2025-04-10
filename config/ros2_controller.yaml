@@ -10,6 +10,7 @@ controller_manager:
     
     fork_controller:
       type: position_controllers/JointGroupPositionController      
+      
 fork_controller:
   ros__parameters:
     joints:

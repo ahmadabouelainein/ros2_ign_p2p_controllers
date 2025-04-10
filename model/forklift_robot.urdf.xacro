@@ -14,14 +14,14 @@
     <visual>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/base_link.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/base_link.dae" />
       </geometry>
       <material name="Teal" />
     </visual>
     <collision>
       <origin xyz="-1.0795 -0.5334 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/base_link.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/base_link.dae" />
       </geometry>
     </collision>
     <inertial>
@@ -30,7 +30,7 @@
     </inertial>
   </link>
   <joint name="base_link_to_chassis" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0.1" />
+    <origin rpy="0 0 0" xyz="0 0 0" />
     <parent link="base_link" />
     <child link="chassis" />
   </joint>
@@ -38,18 +38,18 @@
     <visual>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/fork.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/fork.dae" />
       </geometry>
       <material name="Grey" />
     </visual>
     <collision>
       <origin xyz="0 -0.368600 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="$(find mini_task)/model/fork.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/fork.dae" />
       </geometry>
     </collision>
     <inertial>
-      <mass value="100" />
+      <mass value="10" />
       <inertia ixx="0.2" ixy="0" ixz="0" iyy="0.3" iyz="0" izz="0.4" />
     </inertial>
 
@@ -73,7 +73,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -109,7 +109,7 @@
     <visual>
       <!-- <origin xyz="-0.2 0.2 -0.1" rpy="1.5707 0 0" /> -->
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -141,80 +141,11 @@
     <axis xyz="0 0 1" />
     <dynamics damping="0.2" />
   </joint>
-  <!-- 
-  <link name="wheel_front_left">
-    <visual>
-      <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
-      </geometry>
-      <material name="Black" />
-    </visual>
-    <collision>
-      <geometry>
-        <cylinder radius="0.2" length="0.2" />
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="5.2" />
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
-    </inertial>
-    <surface>
-      <friction>
-        <ode>
-          <mu>1.0</mu>  
-          <mu2>1.0</mu2>
-        </ode>
-      </friction>
-    </surface>
-
-  </link>
-
-  <joint name="left_wheel_steering_joint" type="continuous">
-    <origin xyz="0.65 -0.3835 0.1" rpy="1.57 0 0" />
-    <parent link="chassis" />
-    <child link="wheel_front_left" />
-    <axis xyz="0 1 0" />
-    <dynamics damping="0.2" />
-  </joint>
-  <link name="wheel_front_right">
-    <visual>
-      <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
-      </geometry>
-      <material name="Black" />
-    </visual>
-    <collision>
-      <geometry>
-        <cylinder radius="0.2" length="0.2" />
-      </geometry>
-    </collision>
-    <inertial>
-      <mass value="5.2" />
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
-    </inertial>
-    <surface>
-      <friction>
-        <ode>
-          <mu>1.0</mu>  
-          <mu2>1.0</mu2>
-        </ode>
-      </friction>
-    </surface>
-  </link>
-
-
-  <joint name="right_wheel_steering_joint" type="continuous">
-    <origin xyz="0.65 0.3835 0.1" rpy="1.57 0 0" />
-    <parent link="chassis" />
-    <child link="wheel_front_right" />
-    <axis xyz="0 1 0" />
-    <dynamics damping="0.2" />
-  </joint> -->
   <!-- left steer Link -->
   <link name="left_wheel_steering">
     <inertial>
       <mass value="0.1" />
-      <inertia ixx="0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+      <inertia ixx="0.002" ixy="0.0" ixz="0.0" iyy="0.002" iyz="0.0" izz="0.002" />
     </inertial>
   </link>
 
@@ -230,7 +161,7 @@
   <link name="right_wheel_steering">
     <inertial>
       <mass value="0.1" />
-      <inertia ixx="0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0" />
+      <inertia ixx="0.002" ixy="0.0" ixz="0.0" iyy="0.002" iyz="0.0" izz="0.002" />
     </inertial>
   </link>
 
@@ -247,7 +178,7 @@
   <link name="front_left_wheel">
     <visual>
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -274,7 +205,7 @@
   <link name="front_right_wheel">
     <visual>
       <geometry>
-        <mesh filename="$(find mini_task)/model/wheel.dae" />
+        <mesh filename="$(find ros2_ign_p2p_controllers)/model/wheel.dae" />
       </geometry>
       <material name="Black" />
     </visual>
@@ -320,7 +251,7 @@
       <state_interface name="position" />
     </joint>
     <joint name="fork_joint">
-      <command_interface name="position"/>
+      <command_interface name="position" />
       <state_interface name="position">
         <param name="initial_value">0.2</param>
       </state_interface>
@@ -329,7 +260,7 @@
 
   <gazebo>
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-      <parameters>$(find mini_task)/config/ros2_controller.yaml</parameters>
+      <parameters>$(find ros2_ign_p2p_controllers)/config/ros2_controller.yaml</parameters>
     </plugin>
   </gazebo>
 
