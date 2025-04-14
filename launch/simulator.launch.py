@@ -13,8 +13,7 @@
 # limitations under the License.
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
-from launch.actions import RegisterEventHandler
+from launch.actions import IncludeLaunchDescription, RegisterEventHandler, TimerAction, DeclareLaunchArgument
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
@@ -24,6 +23,11 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     # Launch Arguments
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
 
@@ -35,27 +39,6 @@ def generate_launch_description():
                 [FindPackageShare('ros2_ign_p2p_controllers'), 'model', 'forklift_robot.urdf.xacro']
             ),
         ]
-    )
-    ros2_ign_p2p_controllers = FindPackageShare('ros2_ign_p2p_controllers')
-    default_rviz_config_path = PathJoinSubstitution([ros2_ign_p2p_controllers, 'config', 'forklift.rviz'])
-
-    # These parameters are maintained for backwards compatibility
-    gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
-                                    description='Flag to enable joint_state_publisher_gui')
-    rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=default_rviz_config_path,
-                                     description='Absolute path to rviz config file')
-    model_arg = DeclareLaunchArgument(name='model', default_value=robot_description_content,
-                                        description='Path to robot urdf file relative to urdf_tutorial package')
-
-
-
-    rviz_launch = IncludeLaunchDescription(
-        PathJoinSubstitution([FindPackageShare('urdf_launch'), 'launch', 'display.launch.py']),
-        # launch_arguments={
-        #     'urdf_package': 'ros2_ign_p2p_controllers',
-        #     'urdf_package_path': LaunchConfiguration('model'),
-        #     'rviz_config': LaunchConfiguration('rvizconfig'),
-        #     'jsp_gui': LaunchConfiguration('gui')}.items()
     )
     # Get URDF via xacro
     robot_description = {'robot_description': robot_description_content}
@@ -80,28 +63,6 @@ def generate_launch_description():
                    'ackermann', '-allow_renaming', 'true'],
     )
 
-#     load_joint_state_broadcaster = ExecuteProcess(
-#         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-#              'joint_state_broadcaster'],
-#         output='screen'
-#     )
-
-#     load_ackermann_controller = ExecuteProcess(
-#         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-#              'ackermann_steering_controller'],
-#         output='screen'
-#     )
-#     load_fork_controller = ExecuteProcess(
-#         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
-#              'fork_controller'],
-#         output='screen'
-#     )
-#     control_node = Node(
-#     package="controller_manager",
-#     executable="ros2_control_node",
-#     parameters=[robot_controllers],
-#     output="screen",
-# )
     load_joint_state_broadcaster = Node(
         package='controller_manager',
         executable='spawner',
@@ -126,7 +87,7 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'],
+        arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock]'],
         output='screen'
     )
     return LaunchDescription([
@@ -147,16 +108,12 @@ def generate_launch_description():
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=load_joint_state_broadcaster,
-                on_exit=[load_ackermann_controller, load_fork_controller],
+                on_exit=[load_ackermann_controller, load_fork_controller]
             )
         ),
         node_robot_state_publisher,
         gz_spawn_entity,
         p2p_controller,
-        # rviz_arg,
-        # gui_arg,
-        # model_arg,
-        # rviz_launch,
         DeclareLaunchArgument(
             'use_sim_time',
             default_value=use_sim_time,
