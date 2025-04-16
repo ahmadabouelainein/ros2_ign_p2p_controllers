@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <sdf version='1.9'>
   <world name='empty'>
     <physics name='1ms' type='ignored'>
@@ -82,7 +83,7 @@
             </mesh>
           </geometry>
         </collision>
-        <pose>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 0 0</pose>
         <inertial>
           <pose>0 0 0 0 -0 0</pose>
           <mass>1</mass>
@@ -97,7 +98,7 @@
         </inertial>
         <enable_wind>false</enable_wind>
       </link>
-      <pose>5 0 0 0 -0 0</pose>
+      <pose>5 0 0 0 -0 1.57</pose>
       <static>false</static>
       <self_collide>false</self_collide>
     </model>

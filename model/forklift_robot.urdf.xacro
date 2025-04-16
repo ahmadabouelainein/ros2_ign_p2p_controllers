@@ -30,7 +30,7 @@
     </inertial>
   </link>
   <joint name="base_link_to_chassis" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0" />
+    <origin rpy="0 0 0" xyz="0 0 0.05" />
     <parent link="base_link" />
     <child link="chassis" />
   </joint>
@@ -52,11 +52,18 @@
       <mass value="10" />
       <inertia ixx="0.2" ixy="0" ixz="0" iyy="0.3" iyz="0" izz="0.4" />
     </inertial>
-
+    <surface>
+      <friction>
+        <ode>
+          <mu>1.0</mu>  <!-- Friction coefficient -->
+          <mu2>1.0</mu2>
+        </ode>
+      </friction>
+    </surface>
   </link>
 
   <joint name="fork_joint" type="prismatic">
-    <origin rpy="0 0 0" xyz="1.0795 0 0.01" />
+    <origin rpy="0 0 0" xyz="1.0795 0 0.002" />
     <parent link="chassis" />
     <child link="fork" />
     <limit
