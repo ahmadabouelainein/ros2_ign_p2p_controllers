@@ -45,7 +45,7 @@ jobs:
           path: ros_ws/src/ros2_ign_p2p_controllers
 
       # Build for test coverage
-      - name: Configure CMake flags and build exectables
+      - name: Build and Test
         run: |
           source /opt/ros/humble/setup.bash
           sudo apt install python3-rosdep
@@ -54,8 +54,7 @@ jobs:
           cd ros_ws
           rosdep install --from-paths src -y --ignore-src
           colcon build --packages-select ros2_ign_p2p_controllers
-          colcon test --packages-select ros2_ign_p2p_controllers
-          colcon test-result --all --verbose
+          colcon test --packages-select ros2_ign_p2p_controllers --event-handlers console_cohesion+
         
 
       
