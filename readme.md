@@ -1,17 +1,59 @@
-# Forklift Control with ROS2 and Gazebo
+# Forklift Control with ROS 2 and Ignition Gazebo
 
-This repository provides a solution for simulating and controlling a forklift model in Gazebo using ROS2. The project includes several key features that enhance the forklift’s simulation and control, ensuring a seamless integration into the Gazebo environment.
+This repository provides a complete, containerized solution for simulating and controlling a forklift model in Ignition Gazebo Fortress using ROS 2. The project demonstrates:
+
+- A **Gazebo-compatible forklift URDF**, with sensor and actuator plugins.
+- A **custom point-to-point (P2P) controller**.
+- A **ROS 2 Action Server** (`/p2p_control`) exposing a `NavigateToPose` interface.
+- **Unit and integration tests** for reliability.
+- A **Dockerized environment** for reproducible builds and deployments.
+
+---
+
+## Motivation
+
+In industrial robotics, rapid prototyping and validation in simulation accelerate development cycles and reduce hardware risk. Existing navigation stacks such as Nav2 can be heavyweight for simple point-to-point tasks. This project aims to deliver a lightweight, ROS 2-native controller optimized for:
+
+- Minimal dependencies and easy customization
+- Fast feedback loops and deterministic behavior
+- Seamless integration with `ros2_control` and Ignition Gazebo Fortress
+
+---
+
+## System Architecture
+
+Below is an overview of the components and data flow:
+
+```text
++------------------------------------------------+
+|                Docker Container                |
+|                                                |
+|  +---------------+      +-------------------+   |
+|  | ROS 2 Action  |      | ign_ros2_control  |   |
+|  | Server (/p2p)  |<---->| Bridge Plugin     |   |
+|  +-------+-------+      +---------+---------+   |
+|          |                        |             |
+|          v                        v             |
+|  +---------------+      +-------------------+   |
+|  |  P2P Ctrl     |      | ros2_control      |   |
+|  | Plugin (C++)  |----->| Controller Manager|   |
+|  +---------------+      +--------+----------+   |
+|          |                        |             |
+|          v                        v             |
+|  +-------------------------------------------+  |
+|  | Ignition Gazebo Fortress Simulator       |  |
+|  | (Forklift URDF, Sensors, Actuators)      |  |
+|  +-------------------------------------------+  |
++------------------------------------------------+
+```
 
 ## Features
+
 
 ### 1. **Gazebo-Compatible Forklift URDF**
    - The forklift URDF model has been modified to ensure full compatibility with Gazebo Fortress.
    - Necessary ros2 plugins are integrated to handle sensors, actuators, and interactions within the simulation environment.
 
-
-### 2. **Differential Drive Offset Point-to-Point (P2P) Controller**
-   - A differential drive controller is implemented to move the forklift from one point to another using a point-to-point (P2P) control strategy.
-   - The controller accounts for differential drive system offsets, ensuring precise control over the forklift’s movement.
 ### 2. **Differential Drive Offset Point-to-Point (P2P) Controller**
    - A differential drive controller is implemented to move the forklift from one point to another using a point-to-point (P2P) control strategy.
    - The controller accounts for differential drive system offsets, ensuring precise control over the forklift’s movement.
@@ -22,7 +64,6 @@ This repository provides a solution for simulating and controlling a forklift mo
 
 ### 4. **Dockerized Setup**
    - The entire setup is containerized using Docker, providing a consistent and portable environment for easy deployment.
-   - A `Dockerfile` is included for building the container and detailed instructions are provided for running the system within a Docker container.
    - A `Dockerfile` is included for building the container and detailed instructions are provided for running the system within a Docker container.
 
 ## Setup and Installation
