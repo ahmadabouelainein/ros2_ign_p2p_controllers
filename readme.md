@@ -112,10 +112,10 @@ Below is an overview of the components and data flow:
     ```
     source install/setup.bash && ros2 action send_goal /p2p_control nav2_msgs/action/NavigateToPose "{pose: {pose: {position: {x: 20.2, y: 10.1, z: 0.3}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}}
     ``` 
-    
+
 ## License
 
-Copyright © 2023 ahmadabouelainein \
+Copyright © 2025 ahmadabouelainein \
 This project is available under the terms of [the MIT License](LICENSE).
    
 
