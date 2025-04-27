@@ -31,7 +31,8 @@ def generate_test_description():
         launch_ros.actions.Node(
             package='ros2_ign_p2p_controllers',
             executable='P2PController',
-        ),
+            output={'both': 'log'}
+            ),
         launch_testing.actions.ReadyToTest()
     ])
 
@@ -52,10 +53,10 @@ class TestP2PControllerIntegration(unittest.TestCase):
         cls.odom_pub = cls.node.create_publisher(Odometry,
                                                  '/ackermann_steering_controller/odometry',
                                                  10)
-
-        cls.action_client = ActionClient(cls.node, NavigateToPose, 'p2p_control')
         cls.x = 0.0
         cls.y = 0.0
+        cls.goal_x = 0.0
+        cls.goal_y = 0.0
         cls.theta = 0.0
         cls.goal_theta = 0.0
         cls.position_reached = False
@@ -72,7 +73,7 @@ class TestP2PControllerIntegration(unittest.TestCase):
     @classmethod
     def cmd_callback(cls, msg_stamped: TwistStamped):
         now = time.time()
-        dt = now - cls.last_time
+        dt = 1/1000
         cls.last_time = now
         msg = msg_stamped.twist
         cls.v = msg.linear.x
@@ -116,11 +117,14 @@ class TestP2PControllerIntegration(unittest.TestCase):
             diff += 2 * math.pi
         return diff
 
-    def test_direction_login(self):
-        if (self.__class__.goal_x > self.__class__.x) and (self.__class__.v < 0):
-            self.fail(f"Goal point is in front of current position but the vehicle is moving backwards.\n current_x: {self.__class__.x:.2f}\n {self.__class__.goal_x:.2f}")
-        if (self.__class__.goal_x < self.__class__.x) and (self.__class__.v > 0):
-            self.fail(f"Goal point is in behind of current position but the vehicle is moving forwards.\n current_x: {self.__class__.x:.2f}\n {self.__class__.goal_x:.2f}")
+    def test_direction_logic(self):
+        """
+        Check if the vehicle drives in the correct direction based on where the goal is relative to the current position.
+        """
+        if (self.__class__.goal_x < self.__class__.x):
+            self.assertLess(self.__class__.v < 0.0, f"Goal point is in front of current position but the vehicle is moving backwards.\n current_x: {round(self.__class__.x, 3)}\n goal_x: {round(self.__class__.goal_x, 3)}")
+        if (self.__class__.goal_x > self.__class__.x):
+            self.assertGreater(self.__class__.v > 0.0, f"Goal point is in behind of current position but the vehicle is moving forwards.\n current_x: {round(self.__class__.x, 3)}\n goal_x: {round(self.__class__.goal_x, 3)}")
     def test_goal_reaching(self):
         """
         Send a goal and check that the simulated pose converges using Euler integration.
@@ -128,28 +132,29 @@ class TestP2PControllerIntegration(unittest.TestCase):
         errors = []
         # Define the goal
         for _ in range(20):
+            action_client = ActionClient(self.__class__.node, NavigateToPose, 'p2p_control')
             goal_msg = NavigateToPose.Goal()
             goal_msg.pose.header.frame_id = "map"
-            goal_msg.pose.pose.position.x = random.randint(-20, 20)
-            goal_msg.pose.pose.position.y = random.randint(-20, 20)
+            goal_msg.pose.pose.position.x = float(random.randint(-30, 30))
+            goal_msg.pose.pose.position.y = float(random.randint(-30, 30))
             goal_msg.pose.pose.orientation.w = 1.0
 
             self.__class__.goal_x = goal_msg.pose.pose.position.x
             self.__class__.goal_y = goal_msg.pose.pose.position.y
 
             # Wait for action server
-            if not self.action_client.wait_for_server(timeout_sec=15.0):
+            if not action_client.wait_for_server(timeout_sec=15.0):
                 self.fail("Action server not available.")
 
             # Send goal
-            goal_future = self.action_client.send_goal_async(goal_msg)
-            rclpy.spin_until_future_complete(self.node, goal_future, timeout_sec=5.0)
+            goal_future = action_client.send_goal_async(goal_msg)
+            rclpy.spin_until_future_complete(self.node, goal_future)
             goal_handle = goal_future.result()
             self.assertIsNotNone(goal_handle, msg="Goal handle was not received.")
             self.assertTrue(goal_handle.accepted, msg="Goal was not accepted by the server.")
 
             result_future = goal_handle.get_result_async()
-            rclpy.spin_until_future_complete(self.node, result_future, timeout_sec=30.0)  # allow more time here
+            rclpy.spin_until_future_complete(self.node, result_future)  # allow more time here
             final_result = result_future.result()
             self.assertIsNotNone(final_result, msg="Result future returned None.")
             self.assertEqual(final_result.status, GoalStatus.STATUS_SUCCEEDED, msg="Goal did not succeed.")
@@ -163,5 +168,6 @@ class TestP2PControllerIntegration(unittest.TestCase):
                 errors.append(
                     f"theta mismatch: {math.degrees(self.__class__.theta):.2f}° vs {math.degrees(self.__class__.goal_theta):.2f}°"
                 )
+            action_client.destroy()
         if errors:
             self.fail("Goal was not reached:\n" + "\n".join(errors))
