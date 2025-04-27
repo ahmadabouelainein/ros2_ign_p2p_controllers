@@ -8,8 +8,6 @@ This repository provides a complete, containerized solution for simulating and c
 - **Unit and integration tests** for reliability.
 - A **Dockerized environment** for reproducible builds and deployments.
 
----
-
 ## Motivation
 
 In industrial robotics, rapid prototyping and validation in simulation accelerate development cycles and reduce hardware risk. Existing navigation stacks such as Nav2 can be heavyweight for simple point-to-point tasks. This project aims to deliver a lightweight, ROS 2-native controller optimized for:
@@ -17,8 +15,6 @@ In industrial robotics, rapid prototyping and validation in simulation accelerat
 - Minimal dependencies and easy customization
 - Fast feedback loops and deterministic behavior
 - Seamless integration with `ros2_control` and Ignition Gazebo Fortress
-
----
 
 ## System Architecture
 
@@ -82,10 +78,7 @@ Below is an overview of the components and data flow:
 1. Clone the repository:
    
    ```
-   git clone https://github.com/ahmadabouelainein/ros2_ign_diffdrive/
-   ```
-   ```
-   git clone https://github.com/ahmadabouelainein/ros2_ign_diffdrive/
+   git clone https://github.com/ahmadabouelainein/ros2_ign_p2p_controllers/
    ```
 2. To build the Docker image:
     ```
