@@ -63,12 +63,10 @@ RUN apt-get update && \
     apt-get install -y ros-$ROS_DISTRO-controller-manager && \
     apt-get install -y ros-$ROS_DISTRO-navigation2 ros-$ROS_DISTRO-nav2-bringup && \
     apt-get update && \
-    apt-get install -y ros-$ROS_DISTRO-gazebo-ros-pkgs && \
-    pip3 install colcon-mixin && \
-    pip3 install colcon-common-extensions && \
-    pip3 install colcon-lcov-result && \
-    pip3 install ipykernel && \
-    pip3 install matplotlib && \
+    apt-get install -y ros-$ROS_DISTRO-gazebo-ros-pkgs
+
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt && \
     rosdep init && \
     rosdep update && \
     rm -rf /var/lib/apt/lists/*
