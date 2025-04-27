@@ -51,7 +51,6 @@ jobs:
           sudo apt install python3-rosdep
           sudo rosdep init
           rosdep update --include-eol-distros
-          cd ros_ws/src
           rosdep install --from-paths src -y --ignore-src
           cd ros_ws
           colcon build --packages-select ros2_ign_p2p_controllers
