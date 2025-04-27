@@ -75,12 +75,12 @@ class TestP2PControllerIntegration(unittest.TestCase):
         dt = now - cls.last_time
         cls.last_time = now
         msg = msg_stamped.twist
-        v = msg.linear.x
-        w = msg.angular.z
+        cls.v = msg.linear.x
+        cls.w = msg.angular.z
 
-        cls.x += v * math.cos(cls.theta) * dt
-        cls.y += v * math.sin(cls.theta) * dt
-        cls.theta += w * dt
+        cls.x += cls.v * math.cos(cls.theta) * dt
+        cls.y += cls.v * math.sin(cls.theta) * dt
+        cls.theta += cls.w * dt
 
         odom_msg = Odometry()
         odom_msg.header.stamp = rclpy.time.Time().to_msg()
@@ -116,6 +116,11 @@ class TestP2PControllerIntegration(unittest.TestCase):
             diff += 2 * math.pi
         return diff
 
+    def test_direction_login(self):
+        if (self.__class__.goal_x > self.__class__.x) and (self.__class__.v < 0):
+            self.fail(f"Goal point is in front of current position but the vehicle is moving backwards.\n current_x: {self.__class__.x:.2f}\n {self.__class__.goal_x:.2f}")
+        if (self.__class__.goal_x < self.__class__.x) and (self.__class__.v > 0):
+            self.fail(f"Goal point is in behind of current position but the vehicle is moving forwards.\n current_x: {self.__class__.x:.2f}\n {self.__class__.goal_x:.2f}")
     def test_goal_reaching(self):
         """
         Send a goal and check that the simulated pose converges using Euler integration.
