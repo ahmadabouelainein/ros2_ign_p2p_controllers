@@ -9,7 +9,7 @@ import launch_ros
 import launch_testing
 from launch_testing.markers import keep_alive
 import launch_testing.actions
-
+import random
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionClient
@@ -120,66 +120,43 @@ class TestP2PControllerIntegration(unittest.TestCase):
         """
         Send a goal and check that the simulated pose converges using Euler integration.
         """
-        # Define the goal
-        goal_msg = NavigateToPose.Goal()
-        goal_msg.pose.header.frame_id = "map"
-        goal_msg.pose.pose.position.x = 1.0
-        goal_msg.pose.pose.position.y = 2.0
-        goal_msg.pose.pose.orientation.w = 1.0
-
-        self.__class__.goal_x = goal_msg.pose.pose.position.x
-        self.__class__.goal_y = goal_msg.pose.pose.position.y
-
-        # Wait for action server
-        if not self.action_client.wait_for_server(timeout_sec=15.0):
-            self.fail("Action server not available.")
-
-        # Send goal
-        goal_future = self.action_client.send_goal_async(goal_msg)
-        rclpy.spin_until_future_complete(self.node, goal_future, timeout_sec=5.0)
-        goal_handle = goal_future.result()
-        self.assertIsNotNone(goal_handle, msg="Goal handle was not received.")
-        self.assertTrue(goal_handle.accepted, msg="Goal was not accepted by the server.")
-
-        result_future = goal_handle.get_result_async()
-        rclpy.spin_until_future_complete(self.node, result_future, timeout_sec=30.0)  # allow more time here
-        final_result = result_future.result()
-        self.assertIsNotNone(final_result, msg="Result future returned None.")
-        self.assertEqual(final_result.status, GoalStatus.STATUS_SUCCEEDED, msg="Goal did not succeed.")
-
-    
-
-        # msgp = (f"Controller did not reach the goal. Position is not correct"
-        #        f"\nCurrent position: ({self.__class__.x:.2f}, {self.__class__.y:.2f}, "
-        #        f"\nGoal position: ({goal_msg.pose.pose.position.x:.2f}, {goal_msg.pose.pose.position.y:.2f}, ")
-        # msgo = (f"Controller did not reach the goal. Heading is not correct "
-        #        f"\nCurrent heading: "
-        #        f"{math.degrees(self.__class__.theta):.2f})"
-        #        f"\nGoal heading: "
-        #        f"{math.degrees(self.__class__.goal_theta):.2f}")
-        # msg = (f"Controller did not reach the goal within timeout. "
-        #        f"\nCurrent position: ({self.__class__.x:.2f}, {self.__class__.y:.2f}, "
-        #        f"\nGoal position: ({goal_msg.pose.pose.position.x:.2f}, {goal_msg.pose.pose.position.y:.2f}, "
-        #        f"\nCurrent heading: "
-        #        f"{math.degrees(self.__class__.theta):.2f})"
-        #        f"\nGoal heading: "
-        #        f"{math.degrees(self.__class__.goal_theta):.2f}")
-        # self.assertTrue((self.__class__.orientation_reached and self.__class__.position_reached), msg)
-        # self.assertAlmostEqual(self.__class__.x, goal_msg.pose.pose.position.x, places=1, msg=msgp)
-        # self.assertAlmostEqual(self.__class__.y, goal_msg.pose.pose.position.y, places=1, msg=msgp)
-        # self.assertAlmostEqual(self.__class__.theta, self.__class__.goal_theta, places=1, msg=msgo)
         errors = []
+        # Define the goal
+        for _ in range(20):
+            goal_msg = NavigateToPose.Goal()
+            goal_msg.pose.header.frame_id = "map"
+            goal_msg.pose.pose.position.x = random.randint(-20, 20)
+            goal_msg.pose.pose.position.y = random.randint(-20, 20)
+            goal_msg.pose.pose.orientation.w = 1.0
 
-        if not math.isclose(self.__class__.x, goal_msg.pose.pose.position.x, abs_tol=self.__class__.position_tolerance):
-            errors.append(f"x mismatch: {self.__class__.x:.2f} vs {goal_msg.pose.pose.position.x:.2f}")
+            self.__class__.goal_x = goal_msg.pose.pose.position.x
+            self.__class__.goal_y = goal_msg.pose.pose.position.y
 
-        if not math.isclose(self.__class__.y, goal_msg.pose.pose.position.y, abs_tol=self.__class__.position_tolerance):
-            errors.append(f"y mismatch: {self.__class__.y:.2f} vs {goal_msg.pose.pose.position.y:.2f}")
+            # Wait for action server
+            if not self.action_client.wait_for_server(timeout_sec=15.0):
+                self.fail("Action server not available.")
 
-        if not math.isclose(self.__class__.theta, self.__class__.goal_theta, abs_tol=self.__class__.angular_tolerance):
-            errors.append(
-                f"theta mismatch: {math.degrees(self.__class__.theta):.2f}° vs {math.degrees(self.__class__.goal_theta):.2f}°"
-            )
+            # Send goal
+            goal_future = self.action_client.send_goal_async(goal_msg)
+            rclpy.spin_until_future_complete(self.node, goal_future, timeout_sec=5.0)
+            goal_handle = goal_future.result()
+            self.assertIsNotNone(goal_handle, msg="Goal handle was not received.")
+            self.assertTrue(goal_handle.accepted, msg="Goal was not accepted by the server.")
 
+            result_future = goal_handle.get_result_async()
+            rclpy.spin_until_future_complete(self.node, result_future, timeout_sec=30.0)  # allow more time here
+            final_result = result_future.result()
+            self.assertIsNotNone(final_result, msg="Result future returned None.")
+            self.assertEqual(final_result.status, GoalStatus.STATUS_SUCCEEDED, msg="Goal did not succeed.")
+            if not math.isclose(self.__class__.x, goal_msg.pose.pose.position.x, abs_tol=self.__class__.position_tolerance):
+                errors.append(f"x mismatch: {self.__class__.x:.2f} vs {goal_msg.pose.pose.position.x:.2f}")
+
+            if not math.isclose(self.__class__.y, goal_msg.pose.pose.position.y, abs_tol=self.__class__.position_tolerance):
+                errors.append(f"y mismatch: {self.__class__.y:.2f} vs {goal_msg.pose.pose.position.y:.2f}")
+
+            if not math.isclose(self.__class__.theta, self.__class__.goal_theta, abs_tol=self.__class__.angular_tolerance):
+                errors.append(
+                    f"theta mismatch: {math.degrees(self.__class__.theta):.2f}° vs {math.degrees(self.__class__.goal_theta):.2f}°"
+                )
         if errors:
             self.fail("Goal was not reached:\n" + "\n".join(errors))
