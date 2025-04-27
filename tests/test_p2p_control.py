@@ -11,22 +11,17 @@ from launch_testing.markers import keep_alive
 import launch_testing.actions
 import random
 import rclpy
-from rclpy.node import Node
 from rclpy.action import ActionClient
-from geometry_msgs.msg import PoseStamped, TwistStamped
+from geometry_msgs.msg import TwistStamped
 from nav2_msgs.action import NavigateToPose
 from nav_msgs.msg import Odometry
 from action_msgs.msg import GoalStatus
 
 from tf_transformations import quaternion_from_euler
 
-from builtin_interfaces.msg import Time as TimeMsg
-
 @pytest.mark.launch_test
 @keep_alive
 def generate_test_description():
-    # Launch the controller node
-    # file_path = os.path.dirname(__file__)
     return launch.LaunchDescription([
         launch_ros.actions.Node(
             package='ros2_ign_p2p_controllers',
@@ -42,7 +37,7 @@ class TestP2PControllerIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         rclpy.init()
-        cls.node = rclpy.create_node('test_integration_node')
+        cls.node = rclpy.create_node('test_p2p_controller_node')
 
         cls.cmd_vel_sub = cls.node.create_subscription(
             TwistStamped,
@@ -82,6 +77,7 @@ class TestP2PControllerIntegration(unittest.TestCase):
         cls.x += cls.v * math.cos(cls.theta) * dt
         cls.y += cls.v * math.sin(cls.theta) * dt
         cls.theta += cls.w * dt
+        cls.theta %= math.pi*2
 
         odom_msg = Odometry()
         odom_msg.header.stamp = rclpy.time.Time().to_msg()
