@@ -11,50 +11,65 @@ on:
 
 
 jobs:
-  build-and-unittest:
-    # Create a container of the latest Ubuntu, other values could be
-    # ubuntu-latest, ubuntu-22.04, etc.
-    runs-on: ubuntu-22.04
+  docker-build-and-test:
+    runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: docker build -t p2p_navigation .
+
+    - name: Run tests inside container
+      run: docker run --rm p2p_navigation bash -c "colcon test --packages-select ros2_ign_p2p_controllers --event-handlers console_cohesion+/"
+  # build-and-unittest:
+  #   # Create a container of the latest Ubuntu, other values could be
+  #   # ubuntu-latest, ubuntu-22.04, etc.
+  #   runs-on: ubuntu-22.04
+
+  #   steps:
       
-      # Install some system pacakges
-      - name: Install ROS 2 Humble packages
-        run: |
-          sudo apt update
-          sudo apt install -y software-properties-common
-          sudo add-apt-repository universe
-          sudo apt update && sudo apt install -y curl
-          sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-          sudo apt update
-          sudo apt install -y ros-humble-ros-base python3-colcon-common-extensions
-          sudo apt install -y lcov
+  #     # Install some system pacakges
+  #     - name: Install ROS 2 Humble packages
+  #       run: |
+  #         sudo apt update
+  #         sudo apt install -y software-properties-common
+  #         sudo add-apt-repository universe
+  #         sudo apt update && sudo apt install -y curl
+  #         sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+  #         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+  #         sudo apt update
+  #         sudo apt install -y ros-humble-ros-base python3-colcon-common-extensions 
+  #         sudo apt install -y lcov
 
-      - name: Setup Workspace
-        run: |
-          source /opt/ros/humble/setup.bash
-          mkdir -p ros_ws/src/ros2_ign_p2p_controllers
-          cd ros_ws
-          colcon build 
-          source install/setup.bash
+  #     - name: Setup Workspace
+  #       run: |
+  #         source /opt/ros/humble/setup.bash
+  #         mkdir -p ros_ws/src/ros2_ign_p2p_controllers
+  #         cd ros_ws
+  #         colcon build 
+  #         source install/setup.bash
 
-      # We want to use GitHub CI checkout version 3 for checking out the branch
-      - uses: actions/checkout@v3
-        with:
-          path: ros_ws/src/ros2_ign_p2p_controllers
+  #     # We want to use GitHub CI checkout version 3 for checking out the branch
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         path: ros_ws/src/ros2_ign_p2p_controllers
 
-      # Build for test coverage
-      - name: Build and Test
-        run: |
-          source /opt/ros/humble/setup.bash
-          sudo apt install python3-rosdep
-          sudo rosdep init
-          rosdep update --include-eol-distros
-          cd ros_ws
-          rosdep install --from-paths src -y --ignore-src
-          colcon build --packages-select ros2_ign_p2p_controllers
-          colcon test --packages-select ros2_ign_p2p_controllers --event-handlers console_cohesion+
+  #     # Build for test coverage
+  #     - name: Build and Test
+  #       run: |
+  #         source /opt/ros/humble/setup.bash
+  #         sudo apt install python3-rosdep
+  #         sudo rosdep init
+  #         rosdep update --include-eol-distros
+  #         cd ros_ws
+  #         rosdep install --from-paths src -y --ignore-src
+  #         colcon build --packages-select ros2_ign_p2p_controllers
+  #         colcon test --packages-select ros2_ign_p2p_controllers --event-handlers console_cohesion+
         
 
       
