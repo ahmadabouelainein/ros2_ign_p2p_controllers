@@ -13,11 +13,11 @@
 # limitations under the License.
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, RegisterEventHandler, TimerAction, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription, RegisterEventHandler, DeclareLaunchArgument
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
-
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
+from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
@@ -30,6 +30,7 @@ def generate_launch_description():
     """
     # Launch Arguments
     use_sim_time = LaunchConfiguration('use_sim_time', default=True)
+    headless = LaunchConfiguration('headless', default=False)
 
     robot_description_content = Command(
         [
@@ -92,13 +93,34 @@ def generate_launch_description():
     )
     return LaunchDescription([
         bridge,
-        # Launch gazebo environment
+        # Launch Gazebo normally (with GUI) if NOT headless
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
-                                       'launch',
-                                       'gz_sim.launch.py'])]),
-            launch_arguments=[('gz_args', [' -r -v 4 empty.sdf'])]),
+                PathJoinSubstitution([
+                    FindPackageShare('ros_gz_sim'),
+                    'launch',
+                    'gz_sim.launch.py'
+                ])
+            ),
+            launch_arguments={
+                'gz_args': '-r -v 4 empty.sdf'
+            }.items(),
+            condition=UnlessCondition(headless)  # Only if headless==false
+        ),
+        # Launch Gazebo in headless mode if headless==true
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                PathJoinSubstitution([
+                    FindPackageShare('ros_gz_sim'),
+                    'launch',
+                    'gz_sim.launch.py'
+                ])
+            ),
+            launch_arguments={
+                'gz_args': '-r -s -v 4 empty.sdf'  # Notice -s to suppress GUI
+            }.items(),
+            condition=IfCondition(headless)  # Only if headless==true
+        ),
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=gz_spawn_entity,
@@ -118,4 +140,8 @@ def generate_launch_description():
             'use_sim_time',
             default_value=use_sim_time,
             description='If true, use simulated clock'),
+        DeclareLaunchArgument(
+            'headless',
+            default_value=headless,
+            description='If true, launches gazebo GUI'),
     ])
