@@ -48,6 +48,7 @@ class TestP2PControllerIntegration(unittest.TestCase):
         cls.odom_pub = cls.node.create_publisher(Odometry,
                                                  '/ackermann_steering_controller/odometry',
                                                  10)
+        cls.v = 0.0
         cls.x = 0.0
         cls.y = 0.0
         cls.goal_x = 0.0
@@ -121,6 +122,7 @@ class TestP2PControllerIntegration(unittest.TestCase):
             self.assertLess(self.__class__.v < 0.0, f"Goal point is in front of current position but the vehicle is moving backwards.\n current_x: {round(self.__class__.x, 3)}\n goal_x: {round(self.__class__.goal_x, 3)}")
         if (self.__class__.goal_x > self.__class__.x):
             self.assertGreater(self.__class__.v > 0.0, f"Goal point is in behind of current position but the vehicle is moving forwards.\n current_x: {round(self.__class__.x, 3)}\n goal_x: {round(self.__class__.goal_x, 3)}")
+        print(f"Vehicle direction logic is correct.\n current_x: {round(self.__class__.x, 3)}\n goal_x: {round(self.__class__.goal_x, 3)}\n v: {self.__class__.v}")
     def test_goal_reaching(self):
         """
         Send a goal and check that the simulated pose converges using Euler integration.

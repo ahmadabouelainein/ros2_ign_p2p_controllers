@@ -151,7 +151,7 @@ class P2PController(Node):
 
 def normalize_angle(angle):
     """
-        Update current_pose based on odometry data
+        Maps angle from -pi to pi
 
         """
     return (angle + math.pi) % (2 * math.pi) - math.pi
