@@ -2,6 +2,8 @@
 
 This repository provides a solution for simulating and controlling a forklift model in Gazebo using ROS2. The project includes several key features that enhance the forklift’s simulation and control, ensuring a seamless integration into the Gazebo environment.
 
+
+[![Watch the video](https://i.sstatic.net/Vp2cE.png)](forklift_demo.webm.mov)
 ## Features
 
 ### 1. **Gazebo-Compatible Forklift URDF**
